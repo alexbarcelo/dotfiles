@@ -10,6 +10,7 @@ from __future__ import (unicode_literals,
                         print_function)
 import os
 import subprocess
+import sys
 
 USERNAME = os.getenv("ABDF_USERNAME", "alexbarcelo")
 REPO = os.getenv("ABDF_REPO",
@@ -24,7 +25,7 @@ if __name__ == "__main__":
 
     exec_path = os.path.dirname(os.path.abspath(__file__))
     print("   > I am being executed from:", exec_path)
-    target_path = os.path.join(os.getenv('HOME'), "dotfiles")
+    target_path = os.path.expanduser("~/dotfiles")
     print("   > My target path is:", target_path)
 
     if exec_path == target_path:
@@ -34,7 +35,20 @@ if __name__ == "__main__":
     print("   * Starting bootstrap of Dotfiles")
 
     print("   * Proceeding to git-clone repository:", REPO)
-    subprocess.call(['git', 'clone', REPO, target_path])
+    retcode = subprocess.call([
+        'git', 'clone',
+        '--quiet',
+        '--depth', '2',
+        '--recurse-submodules',
+        REPO,
+        target_path])
+    if retcode != 0:
+        print("   * Error while trying to execute git clone")
+        exit(retcode)
+    print("   * Clone finished, ready to use the Alex Barcelo Dotfile Python library")
+
+    sys.path.append(target_path)
+    import abdf
 
     if os.path.exists(os.path.join(exec_path, "private", ".POPULATED")):
         print("   * I am being executed from a USB stick or a similar authoritative source")
