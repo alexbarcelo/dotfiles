@@ -13,7 +13,7 @@ import subprocess
 
 USERNAME = os.getenv("ABDF_USERNAME", "alexbarcelo")
 REPO = os.getenv("ABDF_REPO",
-                 "https://github.com/{}/dotfiles.git".format(USERNAME))
+                 "git@github.com:{}/dotfiles.git".format(USERNAME))
 
 if __name__ == "__main__":
     print()
