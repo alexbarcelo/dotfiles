@@ -9,8 +9,10 @@ machinery.
 from __future__ import (unicode_literals,
                         print_function)
 import os
+import shutil
 import subprocess
 import sys
+
 
 USERNAME = os.getenv("ABDF_USERNAME", "alexbarcelo")
 REPO = os.getenv("ABDF_REPO",
@@ -49,10 +51,13 @@ if __name__ == "__main__":
 
     sys.path.append(target_path)
     import abdf
+    import abdf.utils
+    abdf.deploy()
 
-    if os.path.exists(os.path.join(exec_path, "private", ".POPULATED")):
+    private_path = os.path.join(exec_path, "private")
+    if os.path.exists(os.path.join(private_path, ".POPULATED")):
         print("   * I am being executed from a USB stick or a similar authoritative source")
         print("     so I will use its `private` folder as a valid source")
+        print("   > That means, copying %s into %s" % (private_path, os.path.expanduser('~')))
 
-        # ToDo
-
+        abdf.utils.copytree(private_path, os.path.expanduser('~'))

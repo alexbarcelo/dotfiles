@@ -1,4 +1,9 @@
 #!/usr/bin/env python
+"""Simple wrapper to the ABDF library.
+
+This script simply ensures a valid sys.path and proceeds to call the main()
+function in the abdf package.
+"""
 
 import os.path
 import sys

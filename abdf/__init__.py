@@ -1,6 +1,6 @@
 """Alex Barcelo Dotfiles library
 
-All the Logic of Dotfiles management is done throught this library (except the
+All the Logic of Dotfiles management is done through this library (except the
 special case of bootstrap, which is a standalone script).
 """
 from argparse import ArgumentParser
@@ -8,7 +8,13 @@ from .deploy import deploy
 
 
 def do_deploy(args):
-    deploy()
+    try:
+        deploy()
+    except Exception:
+        print("Some error occurred")
+        return 1
+    else:
+        return 0
 
 
 def main():
@@ -27,4 +33,4 @@ def main():
     deploy_parser.set_defaults(func=do_deploy)
 
     args = parser.parse_args()
-    args.func(args)
+    return args.func(args)
