@@ -3,7 +3,7 @@ source ~/antigen.zsh
 # Load the oh-my-zsh's library.
 antigen use oh-my-zsh
 
-if [[ `which kubectl &>/dev/null && $?` != 0 ]]; then
+if type kubectl > /dev/null; then
   antigen bundle kubectl
   source <(kubectl completion zsh)
 fi
